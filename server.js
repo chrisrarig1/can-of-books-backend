@@ -85,5 +85,9 @@ async function findBook(request,response){
     const item = await Book.find(filterQ);
     response.status(200).send(item);
   }
+  else{
+    response.status(200).send([]);
+  }
 }
+
 
