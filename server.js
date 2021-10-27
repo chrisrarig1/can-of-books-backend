@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 app.use(cors());
+app.use(express.json());
 const mongoose = require('mongoose');
 
 const PORT = process.env.PORT || 3001;
@@ -36,14 +37,7 @@ db.once('open', () => console.log('db is connected'));
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
 
 
-const bookSchema = new mongoose.Schema({
-  title: {type: String},
-  description: {type: String},
-  status: {type: String, uppercase: true, enum: ['AVAIABLE','NOT AVAIABLE']},
-  email: {type: String},
-});
-
-const Book = mongoose.model('Book', bookSchema);
+let Book = require('./modules/schema.js');
 
 
 function sample(request,response){
