@@ -25,6 +25,7 @@ app.get('/', (request, response) => {
 app.get('/clear', clearDB);
 app.get('/seed', sample);
 app.get('/books',findBook);
+app.post('/books',postBook);
 
 mongoose.connect(process.env.MONGO_CONNECTION_STRING,
   { useNewUrlParser: true, useUnifiedTopology: true});
@@ -39,6 +40,21 @@ app.listen(PORT, () => console.log(`listening on ${PORT}`));
 
 let Book = require('./modules/schema.js');
 
+async function postBook(req, res) {
+  let newBook = req.body;
+  console.log(newBook);
+  res.status(200).send('Connected');
+
+  try {
+    let postEntry = Book(newBook);
+    postEntry.save();
+    res.status(200).send(newBook);
+  }
+
+  catch (err) {
+    res.status(500).send('error posting: ', err.message);
+  }
+}
 
 function sample(request,response){
   const seed = [
