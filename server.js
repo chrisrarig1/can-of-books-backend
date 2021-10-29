@@ -46,7 +46,7 @@ async function postBook(req, res) {
   res.status(200).send('Connected');
 
   try {
-    let postEntry = Book(newBook);
+    let postEntry = new Book(newBook);
     postEntry.save();
     res.status(200).send(newBook);
   }
