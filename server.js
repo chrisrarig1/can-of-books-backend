@@ -49,7 +49,7 @@ async function postBook(req, res) {
   try {
     let postEntry = new Book(newBook);
     postEntry.save();
-    res.status(200).send(newBook);
+    res.status(200).send(postEntry);
   }
 
   catch (err) {
@@ -112,6 +112,20 @@ app.delete('/books/:id', async (request,response) => {
     response.status(500).send(`Book not deleted: ${e.message}`);
   }
 });
+
+app.put('/books/:id', async (request,response) => {
+  let putObj = request.body;
+  let id = request.params.id;
+  console.log(id);
+  try{
+    let updatedBook = await Book.findByIdAndUpdate(id, putObj,{new: true, overwrite: true});
+    console.log(updatedBook);
+    response.status(200).send(updatedBook);
+  }
+  catch(e){
+    response.status(500).send(`Book not updated: ${e.message}`);
+  }
+} );
 
 ///add a catch all route
 
