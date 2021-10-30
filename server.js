@@ -27,6 +27,7 @@ app.get('/seed', sample);
 app.get('/books',findBook);
 app.post('/books',postBook);
 
+
 mongoose.connect(process.env.MONGO_CONNECTION_STRING,
   { useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -100,4 +101,17 @@ async function findBook(request,response){
   }
 }
 
+app.delete('/books/:id', async (request,response) => {
+  try{
+    let { id } = request.params;
+    let deletedBook = await Book.findByIdAndDelete(id);
+    console.log(id);
+    response.status(200).send(deletedBook);
+  }
+  catch(e){
+    response.status(500).send(`Book not deleted: ${e.message}`);
+  }
+});
+
+///add a catch all route
 
