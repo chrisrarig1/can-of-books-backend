@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const bookSchema = new mongoose.Schema({
   title: {type: String},
   description: {type: String},
-  status: {type: String, uppercase: true, enum: ['AVAIABLE','NOT AVAIABLE']},
+  status: {type: String, uppercase: true, enum: ['AVAILABLE','NOT AVAILABLE']},
   email: {type: String},
 });
 

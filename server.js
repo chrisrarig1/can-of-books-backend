@@ -19,7 +19,7 @@ app.get('/test', (request, response) => {
 
 app.get('/', (request, response) => {
 
-  response.send('test request received');
+  response.status(200).send('test request received');
 });
 
 app.get('/clear', clearDB);
@@ -44,7 +44,7 @@ let Book = require('./modules/schema.js');
 async function postBook(req, res) {
   let newBook = req.body;
   console.log(newBook);
-  res.status(200).send('Connected');
+  // .status(200).send('Connected');
 
   try {
     let postEntry = new Book(newBook);
@@ -59,9 +59,9 @@ async function postBook(req, res) {
 
 function sample(request,response){
   const seed = [
-    {title: 'Catcher in the Rye',description: 'yup',status: 'AVAIABLE',email:'cwrarig20@gmail.com',},
-    {title: 'Enders Game',description: 'space',status: 'NOT AVAIABLE',email:'cwrarig20@gmail.com',},
-    {title: 'The Shining',description: 'horror',status: 'NOT AVAIABLE',email:'cwrarig20@gmail.com',}
+    {title: 'Catcher in the Rye',description: 'yup',status: 'AVAILABLE',email:'cwrarig20@gmail.com',},
+    {title: 'Enders Game',description: 'space',status: 'NOT AVAILABLE',email:'cwrarig20@gmail.com',},
+    {title: 'The Shining',description: 'horror',status: 'NOT AVAILABLE',email:'cwrarig20@gmail.com',}
   ];
   seed.forEach(book => {
     let entry = new Book(book);
