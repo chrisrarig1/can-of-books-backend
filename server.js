@@ -88,7 +88,6 @@ Book.find((err, item) => {
   if (err) return console.error(err);
   console.log(item);
 });
- 
 async function clearDB(request, response){
   try{
     await Book.deleteMany({});
