@@ -9,7 +9,19 @@ app.use(express.json());
 const mongoose = require('mongoose');
 
 const PORT = process.env.PORT || 3001;
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
 
+var client = jwksClient({
+  //jwksUri: Account specific:  settings -> advanced settings -> endpoint -> JSON Web Key Set
+  jwksUri: 'https://dev-45qyrjq6.us.auth0.com/.well-known/jwks.json'
+});
+function getKey(header, callback) {
+  client.getSigningKey(header.kid, function (err, key) {
+    var signingKey = key.publicKey || key.rsaPublicKey;
+    callback(null, signingKey);
+  });
+}
 
 
 app.get('/test', (request, response) => {
@@ -76,7 +88,7 @@ Book.find((err, item) => {
   if (err) return console.error(err);
   console.log(item);
 });
-
+ 
 async function clearDB(request, response){
   try{
     await Book.deleteMany({});
@@ -89,17 +101,34 @@ async function clearDB(request, response){
 }
 
 async function findBook(request,response){
-  if(request.query.email) {
-    let { email } = request.query;
+  try {
     let filterQ = {};
-    filterQ.email= email;
+    if (request.query.status) {
+      let { status } = request.query;
+      filterQ.status = status;
+    }
     const item = await Book.find(filterQ);
-    response.status(200).send(item);
+    let token = '';
+    if (!request.headers.authorization) token = '';
+    else {
+      token = request.headers.authorization.split([' '])[1];
+    }
+
+    jwt.verify(token, getKey, {}, function (err,user) {
+      if (err) response.status(500).send(`Invalid Token: ${err.message}`);
+      else {
+        response.status(200).send(item);
+      }
+    });
+
   }
-  else{
-    response.status(200).send([]);
+  catch (error) {
+    response.status(500).send(`error retrieving equipment data:${error.message}`);
   }
 }
+
+
+
 
 app.delete('/books/:id', async (request,response) => {
   try{
@@ -126,6 +155,3 @@ app.put('/books/:id', async (request,response) => {
     response.status(500).send(`Book not updated: ${e.message}`);
   }
 } );
-
-///add a catch all route
-
