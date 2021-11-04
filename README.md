@@ -92,7 +92,7 @@ This application displays Books a user has stored in the application
 
     - *Start time*: 11-3-2021 8:30pm
 
-    - *Finish time*: 10-30-2021 9:30pm
+    - *Finish time*: 11-3-2021 9:30pm
 
     - *Actual time needed to complete*: 1hr
 
